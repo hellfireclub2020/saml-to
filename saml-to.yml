@@ -1,0 +1,25 @@
+---
+# Config Reference:
+# https://docs.saml.to/configuration/reference
+version: '20220101'
+
+variables:
+  awsAccountId: '714265768071'
+
+providers:
+  aws:
+    entityId: https://signin.aws.amazon.com/saml
+    acsUrl: https://signin.aws.amazon.com/saml
+    attributes:
+      https://aws.amazon.com/SAML/Attributes/RoleSessionName: '<#= user.github.login #>'
+      https://aws.amazon.com/SAML/Attributes/SessionDuration: '3600'
+      https://aws.amazon.com/SAML/Attributes/Role: '<#= user.selectedRole #>,arn:aws:iam::<$= awsAccountId $>:saml-provider/saml.to-hellfireclub2020'
+
+permissions:
+  aws:
+    roles:
+      - name: arn:aws:iam::<$= awsAccountId $>:role/hellfireclub2020-administrator
+        users:
+          github:
+            - hellfireclub2020
+
